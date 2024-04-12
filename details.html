@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mediaworld</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg bg-danger">
+      <div class="container">
+        <a class="navbar-brand" href="#"
+          ><a class="navbar-brand" href="#"
+            ><img src="./assets/Media-World-Logo-Vector.svg-.png" width="200px" alt="logo mediaworld" /></a
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./backoffice.html">Backoffice</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12">
+          <div id="item-details" class="d-flex justify-content-between"></div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("appId");
+      const URL = "https://striveschool-api.herokuapp.com/api/product/";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        fetch(URL + id, {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE4ZWRiODdmMzA0NjAwMWFlNTlmN2EiLCJpYXQiOjE3MTI5MDk3NTIsImV4cCI6MTcxNDExOTM1Mn0.Hsp0WHzNP1dgPVTHk5tfXpt0oQ08RPcHnL8kh-dN6a4",
+          },
+        })
+          .then((resp) => {
+            if (resp.ok) {
+              return resp.json();
+            } else {
+              throw new Error("Errore nella fetch");
+            }
+          })
+          .then((itemObj) => {
+            const container = document.getElementById("item-details");
+            const { _id, name, description, price, imageUrl, brand } = itemObj;
+            container.innerHTML = `
+            <div class="pt-5">
+                <div><p class="m-0">${_id}</p></div>
+              <div><h1>${name}</h1></div>
+              <div><img src="${imageUrl}" alt="" /></div>
+            </div>
+            <div class="align-content-center text-end">
+              <div><p class="display-5 fw-bold text-danger">${price}€</p></div>
+              <div class="border-top border-bottom pt-3"><p>${description}</p></div>
+              <div><button class="btn btn-danger mt-4">Aggiungi al carrello</button></div>
+            </div>
+            `;
+          })
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>
